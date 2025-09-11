@@ -1,36 +1,60 @@
-// import the express application and type definition
 import express, { Express } from "express";
+import {
+  calculatePortfolioPerformance,
+  findLargestHolding,
+  assetAllocationPercentages,
+  Asset
+} from "./portfolio/portfolioPerformance";
 
-// initialize the express application
 const app: Express = express();
+app.use(express.json());
 
-// Interface for health check response
 interface HealthCheckResponse {
-    status: string;
-    uptime: number;
-    timestamp: string;
-    version: string;
+  status: string;
+  uptime: number;
+  timestamp: string;
+  version: string;
 }
 
-// respond to GET request at endpoint "/" with message
 app.get("/", (req, res) => {
-    res.send("Hello, world!");
+  res.send("Hello, world!");
 });
 
-/**
- * Health check endpoint that returns server status information
- * @returns JSON response with server health metrics
- */
 app.get("/api/v1/health", (req, res) => {
-    const healthData: HealthCheckResponse = {
-        status: "OK",
-        uptime: process.uptime(),
-        timestamp: new Date().toISOString(),
-        version: "1.0.0",
-    };
-
-    res.json(healthData);
+  const healthData: HealthCheckResponse = {
+    status: "OK",
+    uptime: process.uptime(),
+    timestamp: new Date().toISOString(),
+    version: "1.0.0",
+  };
+  res.json(healthData);
 });
 
-// export app and server for testing
+// Portfolio performance endpoint
+app.get("/api/v1/portfolio/performance", (req, res) => {
+  const { initialInvestment, currentValue } = req.query;
+  if (!initialInvestment || !currentValue) {
+    return res.status(400).json({ error: "Missing parameters" });
+  }
+  const result = calculatePortfolioPerformance(
+    Number(initialInvestment),
+    Number(currentValue)
+  );
+  res.json(result);
+});
+
+// Largest holding endpoint
+app.post("/api/v1/portfolio/largest-holding", (req, res) => {
+  const assets: Asset[] = req.body.assets || [];
+  const result = findLargestHolding(assets);
+  res.json(result);
+});
+
+// Asset allocation endpoint
+app.post("/api/v1/portfolio/allocation", (req, res) => {
+  const assets: Asset[] = req.body.assets || [];
+  const result = assetAllocationPercentages(assets);
+  res.json(result);
+});
+
 export default app;
