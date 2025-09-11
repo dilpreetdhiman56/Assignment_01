@@ -8,6 +8,8 @@ on:
     branches:
       - main
       - Development
+
+jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
