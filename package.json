@@ -7,7 +7,7 @@
     "start": "ts-node src/server.ts",
     "build": "tsc",
     "test:watch": "jest --watch",
-    "test": "echo \"No tests specified\" && exit 0"
+    "test": "jest"
   },
   "repository": {
     "type": "git",
