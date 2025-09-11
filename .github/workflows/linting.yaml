@@ -1,4 +1,4 @@
-name: TypeScript Lint and Reviewdog
+name: TypeScript Lint and Test
 on:
     pull_request:
         branches:
@@ -10,17 +10,17 @@ jobs:
             # Step 1: Checkout the code
             - name: Checkout code
               uses: actions/checkout@v3
-
+ 
             # Step 2: Setup Node.js
             - name: Setup Node.js
               uses: actions/setup-node@v3
               with:
                   node-version: "20.x"
-
+                 
             # Step 3: Install ESLint for development
             - name: Install ESLint for development
               run: npm install --save-dev eslint @eslint/js @types/eslint__js typescript typescript-eslint
-
+ 
             # Step 4: Run ESLint with Reviewdog
             - name: Run ESLint with Reviewdog
               uses: reviewdog/action-eslint@v1
@@ -30,3 +30,13 @@ jobs:
                   level: error
               env:
                   REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+test:
+     # Install dependencies
+    - name: Install dependencies
+      run: npm install
+ 
+    # Run tests
+    - name: Run tests
+      run: npm test
+ 
+ 
