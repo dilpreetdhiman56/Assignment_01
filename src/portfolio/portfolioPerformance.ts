@@ -39,3 +39,33 @@ export function calculatePortfolioPerformance(
     performanceSummary,
   };
 }
+
+// Interface for an asset
+export interface Asset {
+  name: string;
+  value: number;
+}
+
+// Function 1: Find the Largest Holding
+export function findLargestHolding(assets: Asset[]): Asset | null {
+  if (assets.length === 0) return null;
+  let largest = assets[0];
+  for (const asset of assets) {
+    if (asset.value > largest.value) {
+      largest = asset;
+    }
+  }
+  return largest;
+}
+
+// Function 2: Asset Allocation Percentage
+export function assetAllocationPercentages(assets: Asset[]): { name: string; percentage: number }[] {
+  const total = assets.reduce((sum, asset) => sum + asset.value, 0);
+  if (total === 0 || assets.length === 0) {
+    return assets.map(asset => ({ name: asset.name, percentage: 0 }));
+  }
+  return assets.map(asset => ({
+    name: asset.name,
+    percentage: +(asset.value / total * 100).toFixed(2)
+  }));
+}
