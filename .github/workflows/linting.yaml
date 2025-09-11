@@ -3,9 +3,11 @@ on:
   push:
     branches:
       - main
+      - Development
   pull_request:
     branches:
       - main
+      - Development
 
 jobs:
   lint:
