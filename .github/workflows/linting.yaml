@@ -1,13 +1,14 @@
 name: TypeScript Lint and Test
+
 on:
   push:
     branches:
       - main
-      - Development
+      - development  
   pull_request:
     branches:
       - main
-      - Development
+      - development   
 
 jobs:
   lint:
@@ -22,7 +23,7 @@ jobs:
           node-version: "20.x"
 
       - name: Install dependencies
-        run: npm install --save-dev eslint typescript
+        run: npm install
 
       - name: Run ESLint
         run: npx eslint .
